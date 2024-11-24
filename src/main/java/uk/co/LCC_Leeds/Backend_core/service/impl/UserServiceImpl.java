@@ -10,8 +10,6 @@ import uk.co.LCC_Leeds.Backend_core.mapper.UserMapper;
 import uk.co.LCC_Leeds.Backend_core.repository.UserRepository;
 import uk.co.LCC_Leeds.Backend_core.service.IUserService;
 
-import java.util.Optional;
-
 @Service
 @AllArgsConstructor
 @Transactional
@@ -24,9 +22,10 @@ public class UserServiceImpl implements IUserService {
      * @param userDto : userDto Object
      */
     @Override
-    public void createUser(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) {
     User user = UserMapper.toUserEntity(userDto);
-    User savedUser =  userRepository.save(user);
+    User createdUser = userRepository.save(user);
+    return UserMapper.toUserDto(createdUser);
     }
 
 

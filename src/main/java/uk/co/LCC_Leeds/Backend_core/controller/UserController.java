@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.co.LCC_Leeds.Backend_core.constants.UserConstants;
 import uk.co.LCC_Leeds.Backend_core.dto.ResponseDto;
 import uk.co.LCC_Leeds.Backend_core.dto.UserDto;
+import uk.co.LCC_Leeds.Backend_core.entity.User;
 import uk.co.LCC_Leeds.Backend_core.exception.InvalidArgumentException;
 import uk.co.LCC_Leeds.Backend_core.exception.ResourceNotFound;
 import uk.co.LCC_Leeds.Backend_core.repository.UserRepository;
@@ -21,19 +22,17 @@ public class UserController {
     @Autowired
     private IUserService userService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto<T>> createUser(@Valid @RequestBody UserDto userDto){
+    public ResponseEntity<ResponseDto<UserDto>> createUser(@Valid @RequestBody UserDto userDto){
 
-        userService.createUser(userDto);
-        return ResponseEntity.
-                status(HttpStatus.CREATED)
-                .body(new ResponseDto<T>(UserConstants.STATUS_201, UserConstants.MESSAGE_201));
+        UserDto user = userService.createUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ResponseDto<>(UserConstants.STATUS_201, UserConstants.MESSAGE_201, user));
 
     }
 
     @GetMapping("/fetch/{id}")
     public ResponseEntity<ResponseDto<UserDto>> fetchUser(@Valid @PathVariable Long id) throws ResourceNotFound {
         UserDto userDto = userService.fetchUser(id);
-
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDto<>(UserConstants.STATUS_200, UserConstants.MESSAGE_200, userDto));
     }
