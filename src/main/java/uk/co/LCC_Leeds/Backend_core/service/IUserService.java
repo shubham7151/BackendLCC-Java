@@ -11,7 +11,7 @@ public interface IUserService {
      */
     void createUser(UserDto userDto);
 
-    Boolean updateUser(UserDto userDto, Long id) throws Exception;
+    Long updateUser(UserDto userDto, Long id) throws Exception;
 
     UserDto fetchUser(Long id) throws ResourceNotFound;
 }

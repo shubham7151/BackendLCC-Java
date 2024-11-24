@@ -2,6 +2,7 @@ package uk.co.LCC_Leeds.Backend_core.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uk.co.LCC_Leeds.Backend_core.dto.UserDto;
 import uk.co.LCC_Leeds.Backend_core.entity.User;
 import uk.co.LCC_Leeds.Backend_core.exception.ResourceNotFound;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements IUserService {
 
 
@@ -27,26 +29,33 @@ public class UserServiceImpl implements IUserService {
     User savedUser =  userRepository.save(user);
     }
 
-    @Override
-    public Boolean updateUser(UserDto userDto, Long id) throws Exception {
 
-        userRepository.findById(id).orElseThrow(
+    /**
+     * @param userDto : Use Dto
+     * @param id      : Long userId
+     * @return UpdatedUser
+     * @throws Exception Resource not found
+     */
+    @Override
+    public Long updateUser(UserDto userDto, Long id) throws Exception {
+
+        /*
+            update should be done to existing user rather than creating new user and saving it.
+         */
+        User existingUser = userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFound("User", "id", id.toString())
         );
-        User user = UserMapper.toUserEntity(userDto);
-        user.setUserId(id);
-        userRepository.save(user);
-        return true;
+        UserMapper.updateUserEntity(existingUser, userDto);
+        User updatedUser = userRepository.save(existingUser);
+        return updatedUser.getUserId();
     }
 
     @Override
     public UserDto fetchUser(Long id) throws ResourceNotFound {
-        userRepository.findById(id).orElseThrow(
+      User user =  userRepository.findById(id).orElseThrow(
                 ()-> new ResourceNotFound("User", "id", id.toString())
         );
-
-        Optional<User> user = userRepository.findById(id);
-        return UserMapper.toUserDto(user.get());
+        return UserMapper.toUserDto(user);
     }
 
 

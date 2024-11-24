@@ -13,12 +13,31 @@ public class UserMapper {
         }
     }
     public static User toUserEntity(UserDto userDto){
+        User.UserBuilder  user = User.builder();
+        applyIfNotNull(userDto.getId(), user::userId);
+        applyIfNotNull(userDto.getFirstName(), user::firstName);
+        applyIfNotNull(userDto.getLastName(), user::lastName);
+        applyIfNotNull(userDto.getEmail(), user::email);
+        applyIfNotNull(userDto.getImageURL(), user::imageURL);
+        applyIfNotNull(userDto.getPosition(), user::position);
+        applyIfNotNull(userDto.getInfo(), user::info);
 
+        return user.build();
+    }
+
+    public static void updateUserEntity(User existingUser, UserDto userDto) {
+        applyIfNotNull(userDto.getFirstName(), existingUser::setFirstName);
+        applyIfNotNull(userDto.getLastName(), existingUser::setLastName);
+        applyIfNotNull(userDto.getEmail(), existingUser::setEmail);
+        applyIfNotNull(userDto.getImageURL(), existingUser::setImageURL);
+        applyIfNotNull(userDto.getPosition(), existingUser::setPosition);
+        applyIfNotNull(userDto.getInfo(), existingUser::setInfo);
 
     }
 
     public static UserDto toUserDto(User user){
         return UserDto.builder()
+                .id(user.getUserId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())

@@ -21,33 +21,31 @@ public class UserController {
     @Autowired
     private IUserService userService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createUser(@Valid @RequestBody UserDto userDto){
+    public ResponseEntity<ResponseDto<T>> createUser(@Valid @RequestBody UserDto userDto){
 
         userService.createUser(userDto);
-
         return ResponseEntity.
                 status(HttpStatus.CREATED)
-                .body(new ResponseDto(UserConstants.STATUS_201, UserConstants.MESSAGE_201));
-
+                .body(new ResponseDto<T>(UserConstants.STATUS_201, UserConstants.MESSAGE_201));
 
     }
 
     @GetMapping("/fetch/{id}")
-    public ResponseEntity<UserDto> fetchUser(@Valid @PathVariable Long id) throws ResourceNotFound {
+    public ResponseEntity<ResponseDto<UserDto>> fetchUser(@Valid @PathVariable Long id) throws ResourceNotFound {
         UserDto userDto = userService.fetchUser(id);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userDto);
+                .body(new ResponseDto<>(UserConstants.STATUS_200, UserConstants.MESSAGE_200, userDto));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseDto> updateUser(@Valid @RequestBody UserDto userDto, @Valid @PathVariable Long id) throws Exception {
+    public ResponseEntity<ResponseDto<Long>> updateUser(@Valid @RequestBody UserDto userDto, @Valid @PathVariable Long id) throws Exception {
         if(userDto == null || userDto.getIsUpdated()!=null || id==null){
             throw new InvalidArgumentException("Bad Request : Missing Argument");
         }
-        userService.updateUser(userDto, id);
+        Long updateId = userService.updateUser(userDto, id);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDto(UserConstants.STATUS_200, UserConstants.MESSAGE_200));
+                .body(new ResponseDto<>(UserConstants.STATUS_200, UserConstants.MESSAGE_200, updateId));
     }
 }
