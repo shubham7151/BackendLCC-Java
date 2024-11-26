@@ -33,10 +33,10 @@ public class UserServiceImpl implements IUserService {
      * @param userDto : Use Dto
      * @param id      : Long userId
      * @return UpdatedUser
-     * @throws Exception Resource not found
+     * @throws ResourceNotFound Resource not found
      */
     @Override
-    public Long updateUser(UserDto userDto, Long id) throws Exception {
+    public Long updateUser(UserDto userDto, Long id) throws ResourceNotFound {
 
         /*
             update should be done to existing user rather than creating new user and saving it.

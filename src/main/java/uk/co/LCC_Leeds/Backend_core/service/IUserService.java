@@ -12,7 +12,7 @@ public interface IUserService {
      */
     UserDto createUser(UserDto userDto);
 
-    Long updateUser(UserDto userDto, Long id) throws Exception;
+    Long updateUser(UserDto userDto, Long id) throws ResourceNotFound;
 
     UserDto fetchUser(Long id) throws ResourceNotFound;
 

@@ -3,6 +3,7 @@ package uk.co.LCC_Leeds.Backend_core.mapper;
 import uk.co.LCC_Leeds.Backend_core.dto.UserDto;
 import uk.co.LCC_Leeds.Backend_core.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.function.Consumer;
 
 public class UserMapper {
