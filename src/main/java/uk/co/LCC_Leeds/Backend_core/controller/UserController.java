@@ -47,4 +47,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDto<>(UserConstants.STATUS_200, UserConstants.MESSAGE_200, updateId));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseDto<Long>> deleteUser(@Valid @RequestBody UserDto userDto ) throws InvalidArgumentException, ResourceNotFound {
+        if(userDto==null || userDto.getIsDeleted()!= null ){
+            throw new InvalidArgumentException("Bad Request : Missing Argument");
+        }
+        Long deletedId = userService.deleteUser(userDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDto<>(UserConstants.STATUS_200, UserConstants.MESSAGE_200, deletedId));
+    }
 }

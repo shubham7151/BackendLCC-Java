@@ -15,4 +15,6 @@ public interface IUserService {
     Long updateUser(UserDto userDto, Long id) throws Exception;
 
     UserDto fetchUser(Long id) throws ResourceNotFound;
+
+    Long deleteUser(UserDto userDto) throws ResourceNotFound;
 }
