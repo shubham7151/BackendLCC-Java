@@ -9,8 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>uk.co.LCC-Leeds</groupId>
-	<artifactId>Backend-core</artifactId>
+	<artifactId>backend-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>Backend-core</name>
 	<description>LeedsBackend</description>
 	<url/>
@@ -95,6 +96,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<image>
+						<name>
+							dubeys7151/${project.artifactId}:1.0.5
+						</name>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
